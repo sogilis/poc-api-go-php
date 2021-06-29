@@ -77,4 +77,13 @@ class CatalogRepository {
     file_put_contents($path, json_encode($catalogs, JSON_PRETTY_PRINT));
   }
 
+  public function remove(Catalog $catalog)
+  {
+    $path = $this->rootPath . '/' . self::JSON_FILE;
+    $catalogs = json_decode(file_get_contents($path));
+    $index = $this->findIndex($catalogs, $catalog);
+    unset($catalogs[$index]);
+    file_put_contents($path, json_encode($catalogs, JSON_PRETTY_PRINT));
+  }
+
 }

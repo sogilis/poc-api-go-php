@@ -9,7 +9,7 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 
 #[ApiResource(
     collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT'],
+    itemOperations: ['GET', 'PUT', 'DELETE'],
     paginationEnabled: false,
 )]
 class Catalog

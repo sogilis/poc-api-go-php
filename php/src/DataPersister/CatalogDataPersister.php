@@ -22,7 +22,7 @@ class CatalogDataPersister implements ContextAwareDataPersisterInterface {
 
     public function remove($data, array $context = [])
     {
-
+      $this->repository->remove($data);
     }
 
 }
