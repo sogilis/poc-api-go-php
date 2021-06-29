@@ -6,6 +6,8 @@ ADD . /app
 
 WORKDIR /app
 
-RUN go build -o main .
+RUN go build -o test-wiismile .
 
-CMD ["go-sample-app"]
+EXPOSE 8080
+
+ENTRYPOINT ["/app/test-wiismile"]
