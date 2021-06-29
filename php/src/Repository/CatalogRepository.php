@@ -9,7 +9,7 @@ class CatalogRepository {
 
   const JSON_FILE = 'catalogs.json';
 
-  public function __construct(private string $rootPath){}
+  public function __construct(private string $rootPath) {}
 
   static function createUUID(string $supplier_name)
   {
