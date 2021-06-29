@@ -16,6 +16,18 @@ class CatalogRepository {
     return Uuid::uuid5(Uuid::NAMESPACE_URL, $supplier_name)->toString();
   }
 
+  private function findIndex($catalogs, $catalog): int
+  {
+    $index = count($catalogs);
+    foreach($catalogs as $k => $c) {
+      if ($catalog->getId() === $c->id) {
+        $index = $k;
+        break;
+      }
+    }
+    return $index;
+  }
+
   private function getCatalogs(): array
   {
     $path = $this->rootPath . '/' . self::JSON_FILE;
@@ -38,7 +50,7 @@ class CatalogRepository {
     return $catalogs;
   }
 
-  public function find(int $id): ?Catalog
+  public function find(string $id): ?Catalog
   {
     foreach($this->findAll() as $catalog) {
       if ($id === $catalog->getId()) {
@@ -51,15 +63,18 @@ class CatalogRepository {
   public function persist(Catalog $catalog)
   {
     $path = $this->rootPath . '/' . self::JSON_FILE;
-    $json = json_decode(file_get_contents($path));
-    $json[] = [
+    $catalogs = json_decode(file_get_contents($path));
+
+    $index = $this->findIndex($catalogs, $catalog);
+
+    $catalogs[$index] = [
       "id" => self::createUUID($catalog->getSupplierName()),
       "supplier_name" => $catalog->getSupplierName(),
       "enabled" => $catalog->getEnabled(),
       "created_at" => $catalog->getCreatedAt(),
       "created_by" => $catalog->getCreatedBy(),
     ];
-    file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT));
+    file_put_contents($path, json_encode($catalogs, JSON_PRETTY_PRINT));
   }
 
 }

@@ -8,8 +8,8 @@ use App\Repository\CatalogRepository;
 use Ramsey\Uuid\Nonstandard\Uuid;
 
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get'],
+    collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT'],
     paginationEnabled: false,
 )]
 class Catalog
@@ -40,13 +40,17 @@ class Catalog
     private string $created_by;
 
     public function __construct(
-        string $id,
+        string $id = null,
         string $supplier_name,
         bool $enabled,
         string $created_at, 
         string $created_by
     ) {
-        $this->id = $id;
+        if ($id === null) {
+            $this->id = CatalogRepository::createUUID($supplier_name);
+        } else {
+            $this->id = $id;
+        }
         $this->supplier_name = $supplier_name;
         $this->enabled = $enabled;
         $this->created_at = $created_at;
@@ -63,9 +67,19 @@ class Catalog
         return $this->supplier_name;
     }
 
+    public function setSupplierName(bool $supplier_name): void
+    {
+        $this->supplier_name = $supplier_name;
+    }
+
     public function getEnabled(): ?bool
     {
         return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 
     public function getCreatedAt(): string
