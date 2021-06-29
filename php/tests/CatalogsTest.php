@@ -4,18 +4,25 @@ namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Repository\CatalogRepository;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class CatalogsTest extends ApiTestCase {
 
   const SUPPLIER_NAME_TO_ADD = "Test";
 
-  public function testGetCatalogs(): void
+  private function requestGetCatalogs(): ResponseInterface
   {
-    // when
-    static::createClient()->request('GET', '/api/catalogs', [
+    $response = static::createClient()->request('GET', '/api/catalogs', [
       'headers' => [
           'accept' => 'application/json'
       ]]);
+    return $response;
+  }
+
+  public function testGetCatalogs(): void
+  {
+    // when
+    $response = $this->requestGetCatalogs();
 
     // then
     $this->assertResponseIsSuccessful();
@@ -36,12 +43,13 @@ class CatalogsTest extends ApiTestCase {
         "created_by" => "Benoit"
       ]
     ]);
+    $this->assertCount(2, json_decode($response->getContent()));
   }
 
   public function testGetCatalog(): void
   {
     // given
-    $id = "7357f822-1667-5191-8a49-7959de2b98c8";
+    $id = CatalogRepository::createUUID("Decathlon");
 
     // when
     static::createClient()->request('GET', '/api/catalogs/' . $id, [
@@ -53,7 +61,7 @@ class CatalogsTest extends ApiTestCase {
     $this->assertResponseIsSuccessful();
     $this->assertResponseHeaderSame('content-type', 'application/json; charset=utf-8');
     $this->assertJsonContains([
-      "id" => "7357f822-1667-5191-8a49-7959de2b98c8",
+      "id" => $id,
       "supplier_name" => "Decathlon",
       "enabled" => true,
       "created_at" => "2021-06-29T06:18:25.860Z",
@@ -69,7 +77,7 @@ class CatalogsTest extends ApiTestCase {
           'accept' => 'application/json'
       ],
       'json' => [
-        "supplier_name" => "Test",
+        "supplier_name" => self::SUPPLIER_NAME_TO_ADD,
         "enabled" => true,
         "created_at" => "2021-06-30T06:18:25.860Z",
         "created_by" => "Benoit"  
@@ -85,6 +93,38 @@ class CatalogsTest extends ApiTestCase {
       "created_at" => "2021-06-30T06:18:25.860Z",
       "created_by" => "Benoit"
     ]);
+    
+    $response = $this->requestGetCatalogs();
+    $this->assertCount(3, json_decode($response->getContent()));
+  }
+
+  public function testPutCatalog(): void
+  {
+    // given
+    $id = CatalogRepository::createUUID(self::SUPPLIER_NAME_TO_ADD);
+
+    // when
+    static::createClient()->request('PUT', '/api/catalogs/' . $id, [
+      'headers' => [
+          'accept' => 'application/json'
+      ],
+      'json' => [
+        "enabled" => false
+      ]
+    ]);
+
+    // then
+    $this->assertResponseIsSuccessful();
+    $this->assertResponseHeaderSame('content-type', 'application/json; charset=utf-8');
+    $this->assertJsonContains([
+      "supplier_name" => self::SUPPLIER_NAME_TO_ADD,
+      "enabled" => false,
+      "created_at" => "2021-06-30T06:18:25.860Z",
+      "created_by" => "Benoit"
+    ]);
+
+    $response = $this->requestGetCatalogs();
+    $this->assertCount(3, json_decode($response->getContent()));
   }
 
   public function testDeleteCatalog(): void
@@ -93,10 +133,13 @@ class CatalogsTest extends ApiTestCase {
     $id = CatalogRepository::createUUID(self::SUPPLIER_NAME_TO_ADD);
 
     // when
-    $response = static::createClient()->request('DELETE', '/api/catalogs/' . $id);
+    static::createClient()->request('DELETE', '/api/catalogs/' . $id);
 
     // then
     $this->assertResponseIsSuccessful();
+
+    $response = $this->requestGetCatalogs();
+    $this->assertCount(2, json_decode($response->getContent()));
   }
 
 }
