@@ -1,2 +1,8 @@
-run: # Run php server for this API Platform application
-	php -S 127.0.0.1:8000 -t public
+build:
+	docker-compose build --pull --no-cache
+
+run:
+	docker-compose up -d
+
+stop:
+	docker-compose down
