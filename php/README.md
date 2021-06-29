@@ -1,8 +1,9 @@
 # API Platform
 
-## Run
+## Start
 
 ```shell-session
+$ composer install
 $ make build
 $ make run
 ```
