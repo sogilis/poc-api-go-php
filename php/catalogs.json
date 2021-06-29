@@ -1,16 +1,16 @@
 [
-  {
-    "id": "13e89e04-a867-5fde-b8b8-115b3989553a",
-    "supplier_name": "Leclerc",
-    "enabled": true,
-    "created_at": "2021-06-29T06:18:25.860Z",
-    "created_by": "Benoit"
-  },
-  {
-    "id": "7357f822-1667-5191-8a49-7959de2b98c8",
-    "supplier_name": "Decathlon",
-    "enabled": true,
-    "created_at": "2021-06-29T06:18:25.860Z",
-    "created_by": "Benoit"
-  }
+    {
+        "id": "13e89e04-a867-5fde-b8b8-115b3989553a",
+        "supplier_name": "Leclerc",
+        "enabled": true,
+        "created_at": "2021-06-29T06:18:25.860Z",
+        "created_by": "Benoit"
+    },
+    {
+        "id": "7357f822-1667-5191-8a49-7959de2b98c8",
+        "supplier_name": "Decathlon",
+        "enabled": true,
+        "created_at": "2021-06-29T06:18:25.860Z",
+        "created_by": "Benoit"
+    }
 ]
