@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/sogilis/poc-wiismile/model"
 	"github.com/sogilis/poc-wiismile/utils"
@@ -43,13 +42,13 @@ func GetCatalogsCount() (int, error) {
 }
 
 func SaveCatalog(catalog model.Catalog) (bool, error) {
-	fmt.Println("test")
+
 	isCatalogExist, err := GetCatalogById(catalog.Id)
-	fmt.Println("test")
+
 	if err != nil {
 		return false, err
 	}
-	fmt.Println("test")
+
 	if isCatalogExist != (model.Catalog{}) {
 		err := updateCatalog(catalog)
 		if err != nil {
@@ -57,7 +56,7 @@ func SaveCatalog(catalog model.Catalog) (bool, error) {
 		}
 		return false, nil
 	} else {
-		fmt.Println("test")
+
 		err := insertCatalog(catalog)
 		if err != nil {
 			return false, err
