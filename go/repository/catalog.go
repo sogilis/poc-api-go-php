@@ -1,13 +1,13 @@
 package repository
 
 import (
-	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/sogilis/poc-wiismile/model"
 	"github.com/sogilis/poc-wiismile/utils"
 )
 
-var catalogs = []model.Catalog{
+var Catalogs = []model.Catalog{
 	{
 		Id:           utils.CreateUuid(),
 		Enabled:      true,
@@ -25,30 +25,31 @@ var catalogs = []model.Catalog{
 }
 
 func GetCatalogList() ([]model.Catalog, error) {
-	return catalogs, nil
+	return Catalogs, nil
 }
 
 func GetCatalogById(id uuid.UUID) (model.Catalog, error) {
-	for _, catalog := range catalogs {
+	for _, catalog := range Catalogs {
 		if catalog.Id == id {
 			return catalog, nil
 		}
 	}
 
-	return model.Catalog{}, errors.New("No match ID")
+	return model.Catalog{}, nil
 }
 
 func GetCatalogsCount() (int, error) {
-	return len(catalogs), nil
+	return len(Catalogs), nil
 }
 
 func SaveCatalog(catalog model.Catalog) (bool, error) {
+	fmt.Println("test")
 	isCatalogExist, err := GetCatalogById(catalog.Id)
-
+	fmt.Println("test")
 	if err != nil {
 		return false, err
 	}
-
+	fmt.Println("test")
 	if isCatalogExist != (model.Catalog{}) {
 		err := updateCatalog(catalog)
 		if err != nil {
@@ -56,6 +57,7 @@ func SaveCatalog(catalog model.Catalog) (bool, error) {
 		}
 		return false, nil
 	} else {
+		fmt.Println("test")
 		err := insertCatalog(catalog)
 		if err != nil {
 			return false, err
@@ -66,15 +68,15 @@ func SaveCatalog(catalog model.Catalog) (bool, error) {
 
 func insertCatalog(catalog model.Catalog) error {
 
-	catalogs = append(catalogs, catalog)
+	Catalogs = append(Catalogs, catalog)
 
 	return nil
 }
 
 func updateCatalog(catalog model.Catalog) error {
-	for _, c := range catalogs {
+	for i, c := range Catalogs {
 		if c.Id == catalog.Id {
-			c = catalog
+			Catalogs[i] = catalog
 		}
 	}
 
@@ -83,9 +85,9 @@ func updateCatalog(catalog model.Catalog) error {
 
 func DeleteCatalog(id uuid.UUID) error {
 
-	for i, c := range catalogs {
+	for i, c := range Catalogs {
 		if c.Id == id {
-			catalogs = append(catalogs[:i], catalogs[i+1:]...)
+			Catalogs = append(Catalogs[:i], Catalogs[i+1:]...)
 			break
 		}
 	}

@@ -10,7 +10,7 @@ import (
 
 const port = 8080
 
-func main() {
+func initRouter() *gin.Engine {
 	// Creates a router without any middleware by default
 	r := gin.New()
 
@@ -26,10 +26,16 @@ func main() {
 	r.Use(gin.Recovery())
 
 	// Route Handlers / Endpoints
-	r.GET("/todoAPI/todos", controller.GetCatalogs)
-	r.POST("/todoAPI/todo", controller.SaveCatalog)
-	r.GET("/todoAPI/todo/:id", controller.GetCatalogById)
-	r.DELETE("/todoAPI/todo/:id", controller.DeleteCatalog)
+	r.GET("/API/catalogs", controller.GetCatalogs)
+	r.POST("/API/catalog", controller.SaveCatalog)
+	r.GET("/API/catalog/:id", controller.GetCatalogById)
+	r.DELETE("/API/catalog/:id", controller.DeleteCatalog)
+
+	return r
+}
+
+func main() {
+	r := initRouter()
 
 	log.Printf("todo-project running at 'http://localhost:%d'", port)
 	err := r.Run(":" + strconv.Itoa(port))
