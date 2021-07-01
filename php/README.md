@@ -8,6 +8,12 @@ $ make build
 $ make run
 ```
 
+## Tests
+
+```shell-session
+$ make tests
+```
+
 ## Stop
 
 ```shell-session
