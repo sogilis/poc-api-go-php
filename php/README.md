@@ -17,6 +17,8 @@ $ make build
 $ make run
 ```
 
+Then, go to [http://localhost:8000/api](http://127.0.0.1:8000/api) to see OpenAPI documentation.
+
 ## Tests
 
 Tests are located in `tests/CatalogsTest.php` and there are testing `GET`, `POST`, `PUT`, `DELETE` requests.
@@ -30,5 +32,3 @@ $ make tests
 ```shell-session
 $ make stop
 ```
-
-Then, go to [http://localhost:8000/api](http://127.0.0.1:8000/api) to see OpenAPI documentation.
